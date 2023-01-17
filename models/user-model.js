@@ -6,8 +6,10 @@ const userSchema = new Schema({
     login: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String },
-    activationLink: { type: String, required: true },
-    isActivated: { type: Boolean, default: false }
+    activation_link: { type: String, required: true },
+    is_activated: { type: Boolean, default: false },
+    created_at: { type: Date, required: true },
+    modified_at: { type: Date, required: true } // ?
 })
 
 export default model('User', userSchema)

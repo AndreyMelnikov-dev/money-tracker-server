@@ -1,6 +1,15 @@
+import userService from '../services/user-service.js'
+
 class UserController {
     async registerUser(req, res, next) {
-        
+        try {
+            const { name, email, login, password, phone } = req.body
+            const newUser =
+                await userService.registerUser(name, email, login, password, phone)
+            res.json(newUser)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async activateUser(req, res, next) {
