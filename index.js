@@ -2,12 +2,14 @@ import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import userRouter from './routers/user-router.js'
+import cookieParser from 'cookie-parser'
 
 const server = express()
 const PORT = process.env.PORT || 8001
 
 // middlewares
 server.use(express.json())
+server.use(cookieParser())
 server.use('/api', userRouter)
 
 
