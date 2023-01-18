@@ -3,6 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import userRouter from './routers/user-router.js'
 import cookieParser from 'cookie-parser'
+import errorMiddleware from './middlewares/error-middleware.js'
 
 const server = express()
 const PORT = process.env.PORT || 8001
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 8001
 server.use(express.json())
 server.use(cookieParser())
 server.use('/api', userRouter)
+server.use(errorMiddleware)
 
 
 const startApp = async() => {

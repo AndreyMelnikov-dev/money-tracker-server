@@ -4,14 +4,16 @@ import tokenService from './token-service.js'
 import UserDTO from '../dtos/user-dto.js'
 import bcrypt from 'bcrypt'
 import { v4 } from 'uuid'
+import ErrorApi from '../exceptions/error-api.js'
 
 class UserService {
+
     async registerUser(name, email, login, password, phone) {
 
         // check user candidate
         const userCandidate = await userModel.findOne({ $or: [{ email }, { login }] })
         if (userCandidate)
-            throw new Error('user exist')
+            throw ErrorApi.BadRequest('User Exist')
 
         // create some fields
         const hashedPassword = await bcrypt.hash(password, 3)
@@ -47,7 +49,7 @@ class UserService {
     async activateUser(activationLink) {
         const user = await userModel.findOne({ activation_link: activationLink })
         if (!user) {
-            throw new Error('no user with this link')
+            throw ErrorApi.BadRequest('No user with this link')
         }
         user.is_activated = true
         return await user.save()
@@ -61,12 +63,12 @@ class UserService {
         })
 
         if (!loginCandidate)
-            throw new Error('User not found')
+            throw ErrorApi.BadRequest('User not found')
 
         const isPasswordsEquals = await bcrypt.compare(password, loginCandidate.password)
 
         if (!isPasswordsEquals)
-            throw new Error('Incorrect password')
+            throw ErrorApi.BadRequest('Incorrect password')
 
         const userDto = new UserDTO(loginCandidate)
         const tokens = await tokenService.generateTokens({...userDto })
@@ -84,13 +86,13 @@ class UserService {
 
     async refreshUser(refreshToken) {
         if (!refreshToken)
-            throw new Error('Unauthorized error')
+            throw ErrorApi.UnauthorizedError()
 
         const validatedUser = tokenService.validateRefreshToken(refreshToken)
         const tokenFromDB = tokenService.findRefreshToken(refreshToken)
 
         if (!validatedUser || !tokenFromDB)
-            throw new Error('Unauthorized error')
+            throw ErrorApi.UnauthorizedError()
 
         const userDto = new UserDTO(validatedUser)
 
@@ -102,6 +104,7 @@ class UserService {
             ...newTokens
         }
     }
+    
 }
 
 export default new UserService()

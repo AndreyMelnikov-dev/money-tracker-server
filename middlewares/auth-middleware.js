@@ -6,25 +6,25 @@ export default function(req, res, next) {
         const authHeaders = req.headers.authorization
 
         if (!authHeaders) {
-            throw new Error('Authorization error')
+            throw ErrorApi.UnauthorizedError()
         }
 
         const accessToken = authHeaders.split(' ')[1]
 
         if (!accessToken) {
-            throw new Error('Authorization error')
+            throw ErrorApi.UnauthorizedError()
         }
 
         const userData = tokenService.validateAccesToken(accessToken)
 
         if (!userData) {
-            throw new Error('Authorization error')
+            throw ErrorApi.UnauthorizedError()
         }
 
         const userDto = new UserDTO(userData)
         req.user = userDto
         next()
     } catch (e) {
-        throw new Error(e)
+        throw new Error('')
     }
 }

@@ -24,7 +24,7 @@ class MailService {
                 <a href="${process.env.SERVER_URL}:${process.env.PORT}/api/activate/${link}">
                     <b>Click here to confirm your account</b>
                 </a>
-            `, // html body
+            `
         });
     }
 

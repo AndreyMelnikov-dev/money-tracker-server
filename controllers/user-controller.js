@@ -9,23 +9,21 @@ class UserController {
             res.cookie('refreshToken', newUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(newUser)
         } catch (e) {
-            console.log(e)
+            next(e)
         }
     }
 
     async activateUser(req, res, next) {
         try {
-
             const activationLink = req.params.link
             const activatedUser = await userService.activateUser(activationLink)
-
-            // redirect. Edit on release
-            res.writeHead(301, {
-                Location: `${process.env.CLIENT_URL}/hello`
-            }).end()
-
+                // redirect. Edit on release
+            if (activatedUser)
+                res.writeHead(301, {
+                    Location: `${process.env.CLIENT_URL}/hello`
+                }).end()
         } catch (e) {
-            console.log(e)
+            next(e)
         }
     }
 
@@ -36,7 +34,7 @@ class UserController {
             res.cookie('refreshToken', loggedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(loggedUser)
         } catch (e) {
-            console.log(e)
+            next(e)
         }
     }
 
@@ -47,7 +45,7 @@ class UserController {
             res.clearCookie('refreshToken')
             res.json(loggedoutUser)
         } catch (e) {
-            console.log(e)
+            next(e)
         }
     }
 
@@ -58,7 +56,7 @@ class UserController {
                 // res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(refreshedUser)
         } catch (e) {
-            console.log(e)
+            next(e)
         }
     }
 
