@@ -81,6 +81,27 @@ class UserService {
     async logoutUser(refreshToken) {
         return await tokenService.deleteToken(refreshToken)
     }
+
+    async refreshUser(refreshToken) {
+        if (!refreshToken)
+            throw new Error('Unauthorized error')
+
+        const validatedUser = tokenService.validateRefreshToken(refreshToken)
+        const tokenFromDB = tokenService.findRefreshToken(refreshToken)
+
+        if (!validatedUser || !tokenFromDB)
+            throw new Error('Unauthorized error')
+
+        const userDto = new UserDTO(validatedUser)
+
+        const newTokens = await tokenService.generateTokens({...userDto })
+        await tokenService.saveRefreshToken(validatedUser.id, newTokens.refreshToken)
+
+        return {
+            user: userDto,
+            ...newTokens
+        }
+    }
 }
 
 export default new UserService()

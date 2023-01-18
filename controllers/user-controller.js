@@ -36,7 +36,7 @@ class UserController {
 
     async logoutUser(req, res, next) {
         try {
-            const refreshToken = req.cookies.refreshToken
+            const { refreshToken } = req.cookies
             const loggedoutUser = await userService.logoutUser(refreshToken)
             res.clearCookie('refreshToken')
             res.json(loggedoutUser)
@@ -46,7 +46,14 @@ class UserController {
     }
 
     async refreshUser(req, res, next) {
-        
+        try {
+            const { refreshToken } = req.cookies
+            const refreshedUser = await userService.refreshUser(refreshToken)
+            // res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
+            res.json(refreshedUser)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     // delete on release

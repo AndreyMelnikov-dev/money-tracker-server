@@ -28,6 +28,23 @@ class TokenService {
     async deleteToken(refreshToken) {
         return await tokenModel.findOneAndDelete({ refresh_token: refreshToken })
     }
+
+    validateRefreshToken(refreshToken) {
+        try {
+            return jwt.verify(refreshToken, process.env.REFRESH_TOKEN)
+        } catch (e) {
+            return null
+        }
+    }
+
+    async findRefreshToken(refreshToken) {
+        try {
+            return await tokenModel.findOne({ refresh_token: refreshToken })
+        } catch (e) {
+            return null
+        }
+    }
+
 }
 
 export default new TokenService()
