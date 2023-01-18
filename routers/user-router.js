@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import userController from '../controllers/user-controller.js'
+import authMiddleware from '../middlewares/auth-middleware.js'
 
 const userRouter = Router()
 
@@ -10,6 +11,6 @@ userRouter.get('/logout', userController.logoutUser)
 userRouter.get('/refresh', userController.refreshUser)
 
 // delete on release
-userRouter.get('/user-test', userController.testUser)
+userRouter.get('/users', authMiddleware, userController.testUser)
 
 export default userRouter
