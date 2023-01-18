@@ -15,9 +15,15 @@ class UserController {
 
     async activateUser(req, res, next) {
         try {
+
             const activationLink = req.params.link
             const activatedUser = await userService.activateUser(activationLink)
-            res.json(activatedUser)
+
+            // redirect. Edit on release
+            res.writeHead(301, {
+                Location: `${process.env.CLIENT_URL}/hello`
+            }).end()
+
         } catch (e) {
             console.log(e)
         }
@@ -49,7 +55,7 @@ class UserController {
         try {
             const { refreshToken } = req.cookies
             const refreshedUser = await userService.refreshUser(refreshToken)
-            // res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
+                // res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(refreshedUser)
         } catch (e) {
             console.log(e)

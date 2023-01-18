@@ -13,22 +13,6 @@ class TokenService {
         }
     }
 
-    async saveRefreshToken(userId, refreshToken) {
-        const token = await tokenModel.findOne({ user: userId })
-        if (token) {
-            token.refresh_token = refreshToken
-            return await token.save()
-        }
-        return await tokenModel.create({
-            user: userId,
-            refresh_token: refreshToken
-        })
-    }
-
-    async deleteToken(refreshToken) {
-        return await tokenModel.findOneAndDelete({ refresh_token: refreshToken })
-    }
-
     validateRefreshToken(refreshToken) {
         try {
             return jwt.verify(refreshToken, process.env.REFRESH_TOKEN)
@@ -43,6 +27,22 @@ class TokenService {
         } catch (e) {
             return null
         }
+    }
+
+    async saveRefreshToken(userId, refreshToken) {
+        const token = await tokenModel.findOne({ user: userId })
+        if (token) {
+            token.refresh_token = refreshToken
+            return await token.save()
+        }
+        return await tokenModel.create({
+            user: userId,
+            refresh_token: refreshToken
+        })
+    }
+
+    async deleteToken(refreshToken) {
+        return await tokenModel.findOneAndDelete({ refresh_token: refreshToken })
     }
 
     async findRefreshToken(refreshToken) {
