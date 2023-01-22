@@ -32,8 +32,8 @@ class UserService {
             modified_at: userCreatedDate
         })
 
-        // send activation mail
-        await mailService.sendActivationLink(email, activationLink)
+        // send activation mail. Open on release
+        // await mailService.sendActivationLink(email, activationLink)
 
         // tokens
         const userDto = new UserDTO(newUser)
@@ -71,6 +71,7 @@ class UserService {
             throw ErrorApi.BadRequest('Incorrect password')
 
         const userDto = new UserDTO(loginCandidate)
+
         const tokens = await tokenService.generateTokens({...userDto })
         await tokenService.saveRefreshToken(userDto.id, tokens.refreshToken)
 
@@ -89,10 +90,12 @@ class UserService {
             throw ErrorApi.UnauthorizedError()
 
         const validatedUser = tokenService.validateRefreshToken(refreshToken)
+        console.log(validatedUser)
         const tokenFromDB = tokenService.findRefreshToken(refreshToken)
 
         if (!validatedUser || !tokenFromDB)
             throw ErrorApi.UnauthorizedError()
+
 
         const userDto = new UserDTO(validatedUser)
 
@@ -104,7 +107,7 @@ class UserService {
             ...newTokens
         }
     }
-    
+
 }
 
 export default new UserService()

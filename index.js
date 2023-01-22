@@ -2,8 +2,10 @@ import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import userRouter from './routers/user-router.js'
+import accountRouter from './routers/account-router.js'
 import cookieParser from 'cookie-parser'
 import errorMiddleware from './middlewares/error-middleware.js'
+import authMiddleware from './middlewares/auth-middleware.js'
 
 const server = express()
 const PORT = process.env.PORT || 8001
@@ -12,6 +14,7 @@ const PORT = process.env.PORT || 8001
 server.use(express.json())
 server.use(cookieParser())
 server.use('/api', userRouter)
+server.use('/api', authMiddleware, accountRouter)
 server.use(errorMiddleware)
 
 

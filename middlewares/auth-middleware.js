@@ -21,8 +21,7 @@ export default function(req, res, next) {
             throw ErrorApi.UnauthorizedError()
         }
 
-        const userDto = new UserDTO(userData)
-        req.user = userDto
+        req.user = userData
         next()
     } catch (e) {
         throw new Error('')

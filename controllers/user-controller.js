@@ -5,7 +5,6 @@ class UserController {
         try {
             const { name, email, login, password, phone } = req.body
             const newUser = await userService.registerUser(name, email, login, password, phone)
-
             res.cookie('refreshToken', newUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(newUser)
         } catch (e) {
@@ -53,16 +52,11 @@ class UserController {
         try {
             const { refreshToken } = req.cookies
             const refreshedUser = await userService.refreshUser(refreshToken)
-                // res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
+            res.cookie('refreshToken', refreshedUser.refreshToken, { maxAge: 60 * 60 * 24 * 30 * 1000, httpOnly: true })
             res.json(refreshedUser)
         } catch (e) {
             next(e)
         }
-    }
-
-    // delete on release
-    async testUser(req, res, next) {
-        res.json('test user')
     }
 }
 

@@ -2,7 +2,7 @@ class UserDTO {
     constructor(model) {
         this.email = model.email
         this.login = model.login
-        this.id = model._id
+        this.id = model._id || model.id
         this.is_activated = model.is_activated
     }
 }
