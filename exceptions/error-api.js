@@ -13,8 +13,12 @@ class ErrorApi extends Error {
         return new ErrorApi(400, message, errors)
     }
 
-    static NotFound(){
+    static NotFound() {
         return new ErrorApi(404, 'Nothing Found')
+    }
+
+    static FileError() {
+        return new ErrorApi(500, 'File Error')
     }
 }
 

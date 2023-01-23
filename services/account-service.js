@@ -39,9 +39,8 @@ class AccountService {
         }, { new: true })
     }
 
-    async updateAccountValue(accountId, value) {
-
-    }
+    // async updateAccountValue(accountId, value) {
+    // }
 
     async deleteAccount(accountId, userId) {
         return await accountModel.findOneAndDelete({ _id: accountId, user: userId })
