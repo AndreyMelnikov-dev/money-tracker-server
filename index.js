@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import errorMiddleware from './middlewares/error-middleware.js'
 import authMiddleware from './middlewares/auth-middleware.js'
 import fileUpload from 'express-fileupload'
+import categoryRouter from './routers/category-router.js'
 
 const server = express()
 const PORT = process.env.PORT || 8001
@@ -20,6 +21,7 @@ server.use(cookieParser())
 server.use('/api', userRouter)
 server.use('/api', authMiddleware, accountRouter)
 server.use('/api', authMiddleware, iconRouter)
+server.use('/api', authMiddleware, categoryRouter)
 server.use(errorMiddleware)
 
 
