@@ -38,6 +38,10 @@ class TransactionService {
         }, { new: true })
     }
 
+    async deleteTransaction(userId, transactionId) {
+        return await transactionModel.findOneAndDelete({ user: userId, _id: transactionId })
+    }
+
 }
 
 export default new TransactionService()

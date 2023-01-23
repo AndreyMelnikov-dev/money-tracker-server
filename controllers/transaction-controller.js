@@ -49,7 +49,8 @@ class TransactionController {
     async deleteTransaction(req, res, next) {
         try {
             const userId = req.user.id
-            
+            const transactionId = req.params.id
+            const deletedTransaction = await transactionService.deleteTransaction(userId, transactionId)
         } catch (e) {
             next(e)
         }

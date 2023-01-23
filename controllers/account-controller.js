@@ -38,7 +38,6 @@ class AccountController {
             const userId = req.user.id
             const accountId = req.params.id
             const accountData = req.body
-            console.log(accountData)
             const updatedAccount = await accountService.updateAccount(accountId, userId, accountData)
             res.json(updatedAccount)
         } catch (e) {

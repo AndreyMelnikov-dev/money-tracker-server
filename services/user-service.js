@@ -90,7 +90,6 @@ class UserService {
             throw ErrorApi.UnauthorizedError()
 
         const validatedUser = tokenService.validateRefreshToken(refreshToken)
-        console.log(validatedUser)
         const tokenFromDB = tokenService.findRefreshToken(refreshToken)
 
         if (!validatedUser || !tokenFromDB)
