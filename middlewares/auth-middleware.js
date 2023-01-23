@@ -1,29 +1,26 @@
 import tokenService from '../services/token-service.js'
-import UserDTO from '../dtos/user-dto.js'
+import ErrorApi from '../exceptions/error-api.js'
 
 export default function(req, res, next) {
     try {
         const authHeaders = req.headers.authorization
-
         if (!authHeaders) {
-            throw ErrorApi.UnauthorizedError()
+            return next(ErrorApi.UnauthorizedError())
         }
-
-        const accessToken = authHeaders.split(' ')[1]
+        const accessToken = authHeaders && authHeaders.split(' ')[1]
 
         if (!accessToken) {
-            throw ErrorApi.UnauthorizedError()
+            return next(ErrorApi.UnauthorizedError())
         }
 
         const userData = tokenService.validateAccesToken(accessToken)
-
         if (!userData) {
-            throw ErrorApi.UnauthorizedError()
+            return next(ErrorApi.UnauthorizedError())
         }
 
         req.user = userData
         next()
     } catch (e) {
-        throw new Error('')
+        return next(ErrorApi.UnauthorizedError())
     }
 }

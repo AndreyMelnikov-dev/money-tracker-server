@@ -1,7 +1,7 @@
 import ErrorApi from '../exceptions/error-api.js'
 
 export default function(err, req, res, next) {
-    // console.log(err)
+    console.log(err)
     if (err instanceof ErrorApi) {
         res.status(err.status).json({ message: err.message, errors: err.errors })
     }
